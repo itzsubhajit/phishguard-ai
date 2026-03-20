@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard AI — URL Threat Detector</title>
+    <meta name="description" content="AI-powered phishing URL detection. Scan any link for threats in real-time.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Navbar -->
+<nav>
+    <a class="logo" href="/">
+        <div class="logo-icon">🛡️</div>
+        PhishGuard<span style="color:#a855f7">AI</span>
+    </a>
+    <div class="nav-badge">🔴 LIVE PROTECTION</div>
+</nav>
+
+<!-- Page content -->
+<div class="main-wrapper">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Footer -->
+<footer>
+    Built with ❤️ using <a href="#">Flask + Scikit-Learn</a> &nbsp;·&nbsp; No data stored &nbsp;·&nbsp; Results in &lt;2s
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

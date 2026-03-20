@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="hero">
+
+    <div class="hero-tag">
+        <div class="pulse-dot"></div>
+        AI-Powered Security Scanner
+    </div>
+
+    <h1>
+        Detect Phishing URLs<br>
+        <span class="gradient-text">Before They Harm You</span>
+    </h1>
+
+    <p>
+        Paste any URL below and our machine learning model will instantly analyze
+        it for phishing indicators—no data is stored, no account needed.
+    </p>
+
+    <div class="stats-row">
+        <div class="stat-pill">🧠 <span>ML</span> Powered</div>
+        <div class="stat-pill">⚡ Under <span>2s</span> Response</div>
+        <div class="stat-pill">🔒 <span>0</span> Data Stored</div>
+        <div class="stat-pill">📊 <span>12</span> Features Analyzed</div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash-container">
+            ⚠️ {{ message }}
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+        <form method="POST" action="/analyze" id="analyze-form">
+            <div class="input-wrapper">
+                <span class="input-icon">🔗</span>
+                <input
+                    type="text"
+                    name="url"
+                    id="url-input"
+                    placeholder="https://example.com/login?id=123"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </div>
+
+            <button type="submit" class="btn-analyze" id="analyze-btn">
+                <span class="btn-text">Analyze URL</span>
+                <span class="btn-icon">→</span>
+                <div class="btn-loader" id="btn-loader"></div>
+            </button>
+        </form>
+
+        <div class="tip-box" style="margin-top: 20px;">
+            💡 <span>Tip: You can paste a URL without <code>https://</code> — we'll add it automatically.</span>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

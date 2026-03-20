@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="hero" style="max-width: 640px;">
+
+    <div class="result-hero">
+        <!-- Risk circle -->
+        <div class="risk-circle {{ recommendation.color_class }}" id="risk-circle">
+            <span id="score-counter">0</span>
+            <div class="risk-label">RISK SCORE</div>
+        </div>
+
+        <!-- Level badge -->
+        <div class="level-badge {{ recommendation.color_class }}">
+            {% if recommendation.level == 'SAFE' %}✅{% elif recommendation.level == 'SUSPICIOUS' %}⚠️{% else %}🚨{% endif %}
+            {{ recommendation.level }}
+        </div>
+    </div>
+
+    <div class="card" style="text-align: left; animation-delay: 0.1s;">
+
+        <!-- URL Display -->
+        <div class="url-display">
+            <span class="url-icon">🔗</span>
+            <span>{{ url }}</span>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-section">
+            <div class="progress-label">
+                <span>Phishing Risk</span>
+                <span>{{ score }}/100</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill {{ recommendation.color_class }}" id="progress-fill" data-score="{{ score }}"></div>
+            </div>
+        </div>
+
+        <!-- Message -->
+        <div class="message-card {{ recommendation.color_class }}">
+            <span class="message-icon">
+                {% if recommendation.level == 'SAFE' %}🟢{% elif recommendation.level == 'SUSPICIOUS' %}🟡{% else %}🔴{% endif %}
+            </span>
+            <div>
+                <strong>{{ recommendation.level }}:</strong> {{ recommendation.message }}
+            </div>
+        </div>
+
+        <!-- Feature breakdown -->
+        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">📊 Analysis Details</p>
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-value">{{ "%.0f"|format(prediction.phishing_probability * 100) }}%</div>
+                <div class="feature-name">Phishing Prob.</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-value">{{ score }}</div>
+                <div class="feature-name">Risk Score</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-value">{{ prediction.label }}</div>
+                <div class="feature-name">ML Label</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-value">{{ recommendation.level }}</div>
+                <div class="feature-name">Safety Level</div>
+            </div>
+        </div>
+
+        <!-- Back button -->
+        <a href="/" class="btn-back">
+            ← Analyze Another URL
+        </a>
+
+    </div>
+</div>
+
+<script>
+    // Animate score counter
+    const target = {{ score }};
+    let current = 0;
+    const counter = document.getElementById('score-counter');
+    const step = Math.ceil(target / 60);
+    const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        counter.textContent = current;
+        if (current >= target) clearInterval(timer);
+    }, 20);
+
+    // Animate progress bar
+    window.addEventListener('load', () => {
+        const fill = document.getElementById('progress-fill');
+        setTimeout(() => {
+            fill.style.width = fill.dataset.score + '%';
+        }, 300);
+    });
+</script>
+{% endblock %}
